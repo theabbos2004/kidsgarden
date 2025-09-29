@@ -1,0 +1,1 @@
+export { Menu } from "@/app/_widgets/Menu/Menu";

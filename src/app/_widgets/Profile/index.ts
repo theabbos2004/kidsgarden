@@ -1,0 +1,1 @@
+export { Profile } from "@/app/_widgets/Profile/Profile";

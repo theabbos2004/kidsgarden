@@ -1,0 +1,1 @@
+export { Search } from "@/app/_widgets/Search/Search";

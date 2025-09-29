@@ -1,0 +1,1 @@
+export { AppSidebar } from "@/app/_widgets/Sidebar/Sidebar";
