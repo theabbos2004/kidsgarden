@@ -2,7 +2,7 @@ import { Bell, Home, User, Users, ChartNoAxesColumn } from "lucide-react";
 
 export const menuList = [
   {
-    label: "Bo‘shchalar ro‘yxati",
+    label: "Bog‘chalar ro‘yxati",
     route: "/dashboard",
     icon: Home,
   },

@@ -1,0 +1,1 @@
+export { Header } from "@/app/_widgets/Header/Header";
