@@ -69,6 +69,7 @@ export default function dashboard() {
             </li>
           </ul>
         }
+        className="border-b-1"
       />
       <ul className="px-2 pt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
         {cards.map((card, index) => {

@@ -93,7 +93,7 @@ export function SignInForm() {
             Parolni unutdingizmi?
           </Link>
         </div>
-        <Button type="submit" size={"xl"} variant={"green"}>Submit</Button>
+        <Button type="submit" size={"xl"} variant={"green"} className="bg-green-500/50">Submit</Button>
       </form>
     </Form>
   );

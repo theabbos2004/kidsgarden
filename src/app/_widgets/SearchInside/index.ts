@@ -1,0 +1,1 @@
+export { SearchInside } from "@/app/_widgets/SearchInside/SearchInside";
