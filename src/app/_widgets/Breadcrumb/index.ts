@@ -1,0 +1,1 @@
+export { BreadcrumbWidget } from "@/app/_widgets/Breadcrumb/Breadcrumb";

@@ -80,6 +80,8 @@
   --color-blue-1: #36b7ff;
   --color-gray: #515151cf;
   --color-gray-1: #3b3b3b;
+  --color-gray-2: #383737;
+  --color-purple: #4c49f1;
 }
 
 .dark {
@@ -121,6 +123,6 @@
     @apply border-border outline-ring/50 box-border;
   }
   body {
-    @apply text-foreground ;
+    @apply text-foreground;
   }
 }
