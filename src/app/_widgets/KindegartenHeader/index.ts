@@ -1,0 +1,1 @@
+export { KindegartenHeader } from "@/app/_widgets/KindegartenHeader/KindegartenHeader"

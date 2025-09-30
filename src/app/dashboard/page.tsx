@@ -1,5 +1,121 @@
 import React from "react";
+import { KindegartenHeader } from "@/app/_widgets/KindegartenHeader";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import {
+  ArrowUpNarrowWide,
+  Calendar,
+  Download,
+  Key,
+  MapPin,
+  Pencil,
+  Phone,
+  User,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export default function page() {
-  return <div>home</div>;
+  const cards = [
+    {
+      title: "22-davlaat  bog‘chasi",
+      addres: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
+      fullName: "Akbarova Nigora",
+      phoneNumber: "+998 90 123 45 67",
+      date: "03.08.2025",
+    },
+    {
+      title: "22-davlaat  bog‘chasi",
+      addres: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
+      fullName: "Akbarova Nigora",
+      phoneNumber: "+998 90 123 45 67",
+      date: "03.08.2025",
+    },
+    {
+      title: "22-davlaat  bog‘chasi",
+      addres: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
+      fullName: "Akbarova Nigora",
+      phoneNumber: "+998 90 123 45 67",
+      date: "03.08.2025",
+    },
+    {
+      title: "22-davlaat  bog‘chasi",
+      addres: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
+      fullName: "Akbarova Nigora",
+      phoneNumber: "+998 90 123 45 67",
+      date: "03.08.2025",
+    },
+    {
+      title: "22-davlaat  bog‘chasi",
+      addres: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
+      fullName: "Akbarova Nigora",
+      phoneNumber: "+998 90 123 45 67",
+      date: "03.08.2025",
+    },
+  ];
+  return (
+    <div>
+      <KindegartenHeader />
+      <div className=" grid grid-cols-3 px-2 pb-2 gap-5">
+        {cards.map((card, cardIndex) => (
+          <Card key={cardIndex}>
+            <CardHeader className="text-xl flex justify-between">
+              <h1 className="font-semibold">{card.title}</h1>
+            </CardHeader>
+            <CardContent>
+              <ul className=" space-y-4">
+                <li className="flex gap-3">
+                  <MapPin className="text-xl" />
+                  {card.addres}
+                </li>
+                <li className="flex gap-3">
+                  <User className="text-xl" />
+                  {card.fullName}
+                </li>
+                <li className="flex gap-3">
+                  <Phone className="text-xl" />
+                  {card.phoneNumber}
+                </li>
+                <li className="flex gap-3">
+                  <Calendar className="text-xl" />
+                  <span>Qo‘shilgan sana:</span>
+                  {card.date}
+                </li>
+              </ul>
+            </CardContent>
+            <CardFooter className="flex gap-2">
+              <Button variant={"green"} className="rounded-3xl flex-1">
+                Filyalarni ko‘rsatish
+              </Button>
+              <Popover>
+                <PopoverTrigger>
+                  <div className="border-1 border-gray-900/34 rounded-sm p-1 text-[var(--color-gray-2)] cursor-pointer">
+                    <ArrowUpNarrowWide className="text-2xl" />
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto border-1 rounded-2xl p-2 px-3 flex justify-center items-center">
+                  <ul className="flex">
+                    <li className="text-lg cursor-pointer">
+                      <Pencil />
+                    </li>
+                    <li className="text-lg cursor-pointer">
+                      <Download />
+                    </li>
+                  </ul>
+                </PopoverContent>
+              </Popover>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
 }
