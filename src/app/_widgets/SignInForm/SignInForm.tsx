@@ -1,5 +1,3 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,6 +14,8 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -36,14 +36,34 @@ export function SignInForm() {
       keepMe: false,
     },
   });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    alert(JSON.stringify(values));
-    form.reset();
+  const router = useRouter();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const login = await axios.post("http://localhost:8082/api/auth/login", {
+        username: values.username,
+        password: values.password,
+      });
+      if (!login.data) {
+        throw Error;
+      }
+      form.reset();
+      router.replace("/dashboard");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error("❌ Login error:", error.response?.data || error.message);
+      } else if (error instanceof Error) {
+        console.error("❌ Login error:", error.message);
+      } else {
+        console.error("❌ Login error:", error);
+      }
+    }
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 flex flex-col">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4 flex flex-col"
+      >
         <FormField
           control={form.control}
           name="username"
@@ -82,7 +102,9 @@ export function SignInForm() {
                       className="border-gray_2"
                       id="keepMe"
                     />
-                    <Label htmlFor="keepMe" className="text-gray-500">Eslab qolish</Label>
+                    <Label htmlFor="keepMe" className="text-gray-500">
+                      Eslab qolish
+                    </Label>
                   </div>
                 </FormControl>
                 <FormMessage className="text-red-500" />
@@ -93,7 +115,14 @@ export function SignInForm() {
             Parolni unutdingizmi?
           </Link>
         </div>
-        <Button type="submit" size={"xl"} variant={"green"} className="bg-green-500/50">Submit</Button>
+        <Button
+          type="submit"
+          size={"xl"}
+          variant={"green"}
+          className="bg-green-500/50"
+        >
+          Submit
+        </Button>
       </form>
     </Form>
   );
