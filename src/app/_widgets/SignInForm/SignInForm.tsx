@@ -1,3 +1,4 @@
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,22 +15,14 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import axios from "axios";
 import { useRouter } from "next/navigation";
-
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }),
-  keepMe: z.boolean().optional(),
-});
+import { SinInFormSchema } from "@/lib/definitions";
+import { signIn } from "@/actions/auth";
+import axios from "axios";
 
 export function SignInForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof SinInFormSchema>>({
+    resolver: zodResolver(SinInFormSchema),
     defaultValues: {
       username: "",
       password: "",
@@ -37,24 +30,30 @@ export function SignInForm() {
     },
   });
   const router = useRouter();
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof SinInFormSchema>) {
     try {
-      const login = await axios.post("http://localhost:8082/api/auth/login", {
+      const signInRes = await signIn({
         username: values.username,
         password: values.password,
       });
-      if (!login.data) {
+      if (!signInRes.success) {
         throw Error;
       }
       form.reset();
       router.replace("/dashboard");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        console.error("❌ Login error:", error.response?.data || error.message);
+        form.setError("username", {
+          type: "error",
+          message: error.response?.data || error.message,
+        });
       } else if (error instanceof Error) {
-        console.error("❌ Login error:", error.message);
+        form.setError("username", {
+          type: "error",
+          message: error.message,
+        });
       } else {
-        console.error("❌ Login error:", error);
+        return null;
       }
     }
   }
