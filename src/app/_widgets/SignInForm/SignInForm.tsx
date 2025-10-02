@@ -1,5 +1,4 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,34 +15,54 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }),
-  keepMe: z.boolean().optional(),
-});
+import { useRouter } from "next/navigation";
+import { SinInFormSchema } from "@/lib/definitions";
+import { signIn } from "@/actions/auth";
+import axios from "axios";
 
 export function SignInForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof SinInFormSchema>>({
+    resolver: zodResolver(SinInFormSchema),
     defaultValues: {
       username: "",
       password: "",
       keepMe: false,
     },
   });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    alert(JSON.stringify(values));
-    form.reset();
+  const router = useRouter();
+  async function onSubmit(values: z.infer<typeof SinInFormSchema>) {
+    try {
+      const signInRes = await signIn({
+        username: values.username,
+        password: values.password,
+      });
+      if (!signInRes.success) {
+        throw Error;
+      }
+      form.reset();
+      router.replace("/dashboard");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        form.setError("username", {
+          type: "error",
+          message: error.response?.data || error.message,
+        });
+      } else if (error instanceof Error) {
+        form.setError("username", {
+          type: "error",
+          message: error.message,
+        });
+      } else {
+        return null;
+      }
+    }
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 flex flex-col">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4 flex flex-col"
+      >
         <FormField
           control={form.control}
           name="username"
@@ -82,7 +101,9 @@ export function SignInForm() {
                       className="border-gray_2"
                       id="keepMe"
                     />
-                    <Label htmlFor="keepMe" className="text-gray-500">Eslab qolish</Label>
+                    <Label htmlFor="keepMe" className="text-gray-500">
+                      Eslab qolish
+                    </Label>
                   </div>
                 </FormControl>
                 <FormMessage className="text-red-500" />
@@ -93,7 +114,14 @@ export function SignInForm() {
             Parolni unutdingizmi?
           </Link>
         </div>
-        <Button type="submit" size={"xl"} variant={"green"} className="bg-green-500/50">Submit</Button>
+        <Button
+          type="submit"
+          size={"xl"}
+          variant={"green"}
+          className="bg-green-500/50"
+        >
+          Submit
+        </Button>
       </form>
     </Form>
   );
