@@ -6,26 +6,26 @@ const protectedRoutes = ['/dashboard']
 const publicRoutes = ['/signIn', '/']
 
 export default async function middleware(req: NextRequest) {
-  // const path = req.nextUrl.pathname
-  // const isProtectedRoute = protectedRoutes.includes(path)
-  // const isPublicRoute = publicRoutes.includes(path)
+  const path = req.nextUrl.pathname
+  const isProtectedRoute = protectedRoutes.includes(path)
+  const isPublicRoute = publicRoutes.includes(path)
 
-  // const cookie = (await cookies()).get('session')?.value
-  // const session = await decrypt(cookie)
+  const cookie = (await cookies()).get('session')?.value
+  const session = await decrypt(cookie)
 
-  // if (isProtectedRoute && !session?.userId) {
-  //   return NextResponse.redirect(new URL('/signIn', req.nextUrl))
-  // }
+  if (isProtectedRoute && !session?.userId) {
+    return NextResponse.redirect(new URL('/signIn', req.nextUrl))
+  }
 
-  // if (
-  //   isPublicRoute &&
-  //   session?.userId &&
-  //   !req.nextUrl.pathname.startsWith('/dashboard')
-  // ) {
-  //   return NextResponse.redirect(new URL('/dashboard', req.nextUrl))
-  // }
+  if (
+    isPublicRoute &&
+    session?.userId &&
+    !req.nextUrl.pathname.startsWith('/dashboard')
+  ) {
+    return NextResponse.redirect(new URL('/dashboard', req.nextUrl))
+  }
 
-  // return NextResponse.next()
+  return NextResponse.next()
 }
 
 export const config = {
