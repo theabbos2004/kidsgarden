@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { KindegartenHeader } from "@/app/_widgets/KindegartenHeader";
 
 import { Dialog } from "@/components/ui/dialog";
@@ -9,9 +9,13 @@ import z from "zod";
 import { KindegartenFormSchema } from "@/lib/definitions";
 
 import { BreadcrumbKindegarten } from "@/app/_widgets/BreadcrumbKindegarten";
-import { KindegartenCard } from "@/app/_widgets/KindegartenCard";
-
-export default function Kindegarten() {
+import { BranchsCard } from "@/app/_widgets/BranchsCard";
+export default function Branch({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
   const [openSeeDialog, setOpenSeeDialog] = useState<boolean>(false);
   const [changedKindegarten, setChangedKindegarten] =
     useState<changedKindegartenType>({ type: "update", data: {} });
@@ -81,13 +85,16 @@ export default function Kindegarten() {
       <KindegartenHeader
         Title={
           <BreadcrumbKindegarten
-            routes={[{ title: "Bog'chalar", route: "/dashboard" }]}
+            routes={[
+              { title: "Bog'chalar", route: "/dashboard" },
+              { title: "Filialarim", route: `/dashboard/branchs/${id}` },
+            ]}
           />
         }
       />
       <div className="grid grid-cols-3 px-2 pb-2 gap-5">
         {cards.map((card, cardIndex) => (
-          <KindegartenCard
+          <BranchsCard
             key={cardIndex}
             card={card}
             setChangedKindegarten={setChangedKindegarten}

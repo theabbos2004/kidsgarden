@@ -1,0 +1,1 @@
+export { BranchsCard } from "@/app/_widgets/BranchsCard/BranchsCard";
