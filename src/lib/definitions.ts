@@ -9,3 +9,24 @@ export const SinInFormSchema = z.object({
     }),
     keepMe: z.boolean().optional(),
 });
+
+export const KindegartenFormSchema = z.object({
+    name: z.string().min(2, {
+        message: "Name must be at least 2 characters.",
+    }),
+    phoneNomer: z.string().min(12, {
+        message: "PhoneNumber must be at least 13 characters.",
+    }),
+    fullName: z.string().min(2, {
+        message: "FullName must be at least 2 characters.",
+    }),
+    address: z.string().min(2, {
+        message: "Address must be at least 2 characters.",
+    }),
+    type: z.string().min(2, {
+        message: "Type must be at least 2 characters.",
+    }),
+    email: z.email().min(8, {
+        message: "Email must be at least 8 characters.",
+    }),
+});

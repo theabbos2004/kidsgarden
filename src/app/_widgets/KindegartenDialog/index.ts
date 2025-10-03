@@ -1,0 +1,1 @@
+export { KindegartenDialog } from "@/app/_widgets/KindegartenDialog/KindegartenDialog"

@@ -1,0 +1,1 @@
+export { KindegartenForm } from "@/app/_widgets/KindegartenForm/KindegartenForm";
