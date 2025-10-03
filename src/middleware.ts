@@ -13,20 +13,15 @@ export default async function middleware(req: NextRequest) {
   const cookie = (await cookies()).get('session')?.value
   const session = await decrypt(cookie)
 
-  if (isProtectedRoute && !session?.userId) {
+  if (isProtectedRoute && !session?.accessToken) {
     return NextResponse.redirect(new URL('/signIn', req.nextUrl))
   }
 
   if (
     isPublicRoute &&
-    session?.userId &&
-    !req.nextUrl.pathname.startsWith('/dashboard')
-  ) {
+    session?.accessToken) {
     return NextResponse.redirect(new URL('/dashboard', req.nextUrl))
-  }
-
-  return NextResponse.next()
-}
+  } return NextResponse.next() }
 
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],

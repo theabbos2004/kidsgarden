@@ -15,10 +15,10 @@ export async function signIn({ username, password }: { username: string, passwor
         if (!signIn.data) {
             throw Error;
         }
-        await createSession(signIn.data.id)
+        await createSession(signIn.data.data.accessToken)
         return {
             success: true,
-            data: signIn.data,
+            data: signIn.data.data
         };
     }
     catch (error: unknown) {
