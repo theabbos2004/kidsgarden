@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { KindegartenHeader } from "@/app/_widgets/KindegartenHeader";
 import {
   Card,
@@ -10,7 +11,6 @@ import {
   ArrowUpNarrowWide,
   Calendar,
   Download,
-  Key,
   MapPin,
   Pencil,
   Phone,
@@ -22,45 +22,52 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Dialog } from "@/components/ui/dialog";
+import { KindegartenDialog } from "../_widgets/KindegartenDialog";
+import { KindegartenFormType } from "@/lib/types";
 
-export default function page() {
+export default function Kindegarten() {
+  const [openSeeDialog, setOpenSeeDialog] = useState(false);
+  const [changedKindegarten, setChangedKindegarten] =
+    useState<KindegartenFormType>();
   const cards = [
     {
-      title: "22-davlaat  bog‘chasi",
-      addres: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
+      name: "22-davlaat  bog‘chasi",
+      address: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
       fullName: "Akbarova Nigora",
       phoneNumber: "+998 90 123 45 67",
       date: "03.08.2025",
     },
     {
-      title: "22-davlaat  bog‘chasi",
-      addres: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
+      name: "34-davlaat  bog‘chasi",
+      address: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
       fullName: "Akbarova Nigora",
       phoneNumber: "+998 90 123 45 67",
       date: "03.08.2025",
     },
     {
-      title: "22-davlaat  bog‘chasi",
-      addres: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
+      name: "78-davlaat  bog‘chasi",
+      address: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
       fullName: "Akbarova Nigora",
       phoneNumber: "+998 90 123 45 67",
       date: "03.08.2025",
     },
     {
-      title: "22-davlaat  bog‘chasi",
-      addres: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
+      name: "45-davlaat  bog‘chasi",
+      address: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
       fullName: "Akbarova Nigora",
       phoneNumber: "+998 90 123 45 67",
       date: "03.08.2025",
     },
     {
-      title: "22-davlaat  bog‘chasi",
-      addres: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
+      name: "78-davlaat  bog‘chasi",
+      address: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
       fullName: "Akbarova Nigora",
       phoneNumber: "+998 90 123 45 67",
       date: "03.08.2025",
     },
   ];
+
   return (
     <div>
       <KindegartenHeader />
@@ -68,13 +75,13 @@ export default function page() {
         {cards.map((card, cardIndex) => (
           <Card key={cardIndex}>
             <CardHeader className="text-xl flex justify-between">
-              <h1 className="font-semibold">{card.title}</h1>
+              <h1 className="font-semibold">{card.name}</h1>
             </CardHeader>
             <CardContent>
               <ul className=" space-y-4">
                 <li className="flex gap-3">
                   <MapPin className="text-xl" />
-                  {card.addres}
+                  {card.address}
                 </li>
                 <li className="flex gap-3">
                   <User className="text-xl" />
@@ -92,7 +99,15 @@ export default function page() {
               </ul>
             </CardContent>
             <CardFooter className="flex gap-2">
-              <Button variant={"green"} className="rounded-3xl flex-1">
+              <Button
+                variant={"green"}
+                className="rounded-3xl flex-1"
+                onClick={() => {
+                  const { date, ...newCard } = card;
+                  setChangedKindegarten(newCard);
+                  setOpenSeeDialog(true);
+                }}
+              >
                 Filyalarni ko‘rsatish
               </Button>
               <Popover>
@@ -116,6 +131,14 @@ export default function page() {
           </Card>
         ))}
       </div>
+      <Dialog open={openSeeDialog} onOpenChange={setOpenSeeDialog}>
+        <KindegartenDialog
+          title="Ko'rish"
+          setOpen={setOpenSeeDialog}
+          defaultValues={changedKindegarten}
+          type="readonly"
+        />
+      </Dialog>
     </div>
   );
 }
