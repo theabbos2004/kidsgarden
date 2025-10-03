@@ -1,0 +1,1 @@
+export { KindegartenCard } from "@/app/_widgets/KindegartenCard/KindegartenCard";

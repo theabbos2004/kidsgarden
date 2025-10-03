@@ -8,7 +8,7 @@ export function Header({
   className,
   ...props
 }: {
-  Title?: string;
+  Title?: string | React.ReactNode;
   rightContent?: React.ReactNode;
   className?: string;
 } & React.ComponentProps<"div">) {

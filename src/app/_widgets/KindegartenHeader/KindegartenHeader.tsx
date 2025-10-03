@@ -10,7 +10,11 @@ import { KindegartenDialog } from "../KindegartenDialog";
 import z from "zod";
 import { KindegartenFormSchema } from "@/lib/definitions";
 
-export function KindegartenHeader() {
+export function KindegartenHeader({
+  Title,
+}: {
+  Title: string | React.ReactNode;
+}) {
   const [open, setOpen] = useState(false);
   async function onSubmitCallback(
     values: z.infer<typeof KindegartenFormSchema>
@@ -33,7 +37,7 @@ export function KindegartenHeader() {
   }
   return (
     <Header
-      Title="Bog‘chalar"
+      Title={Title}
       rightContent={
         <ul className="flex gap-4">
           <li>
