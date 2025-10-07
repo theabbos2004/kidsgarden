@@ -19,3 +19,36 @@ export type changedKindegartenType = {
     type: string;
     data: KindegartenFormType;
 }
+
+export type DirectorPostType = {
+    firstname: string,
+    lastname: string,
+    phoneNumber: string
+}
+
+export type KindegartenPostType = {
+    id: string;
+    name: string;
+    subName: string;
+    email: string;
+    phone: string;
+    type: string;
+    address: {
+        country: string;
+        region: string;
+        city: string;
+        street: string;
+        house: string;
+    };
+    locations: {
+        latitude: number;
+        longitude: number;
+    };
+    directorId: string;
+    parentKindergartenId?: string
+};
+export type ResponseType<T = unknown> = {
+    message: string,
+    success: boolean,
+    data?: T | null
+}

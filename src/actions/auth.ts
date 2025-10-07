@@ -1,6 +1,7 @@
 "use server";
 import { createSession } from "@/lib/session";
 import axios from "axios";
+import { errorReturn } from "@/actions/directors";
 
 export async function signIn({ username, password }: { username: string, password: string }): Promise<{
     success: boolean,
@@ -22,9 +23,6 @@ export async function signIn({ username, password }: { username: string, passwor
         };
     }
     catch (error: unknown) {
-        return {
-            success: false,
-            error
-        }
+        return errorReturn(error)
     }
 }

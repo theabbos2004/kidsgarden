@@ -55,10 +55,13 @@ export function KindegartenForm({
   async function onSubmit(values: z.infer<typeof KindegartenFormSchema>) {
     try {
       const signInRes = await onSubmitCallback?.(values);
-      if (signInRes && !signInRes.success) {
-        throw Error;
+      if (signInRes && !signInRes.success && signInRes.error) {
+        throw new Error(
+          typeof signInRes.error === "string"
+            ? signInRes.error
+            : "Serverda noma'lum xatolik yuz berdi"
+        );
       }
-      console.log(signInRes);
       form.reset();
       setOpen?.(false);
     } catch (error: unknown) {
@@ -87,7 +90,7 @@ export function KindegartenForm({
         className="grid grid-cols-2 gap-6"
       >
         {form.formState.errors.root && (
-          <p className="text-red-500 text-sm">
+          <p className="text-red-500 text-sm col-span-2">
             {form.formState.errors.root.message}
           </p>
         )}
@@ -175,9 +178,8 @@ export function KindegartenForm({
                     <SelectValue placeholder="Turi tanlang" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="xususiy">Xususiy</SelectItem>
-                    <SelectItem value="davlat">Davlat</SelectItem>
-                    <SelectItem value="korporativ">Korporativ</SelectItem>
+                    <SelectItem value="XUSUSIY">Xususiy</SelectItem>
+                    <SelectItem value="DAVLAT">Davlat</SelectItem>
                   </SelectContent>
                 </Select>
               </FormControl>
