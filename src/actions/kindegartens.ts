@@ -25,7 +25,7 @@ export async function getKindegartens(): Promise<{
 }
 
 export async function createKindegarten(
-    directorData: KindegartenPostType
+    data: KindegartenPostType
 ): Promise<{
     success: boolean;
     data?: KindegartenPostType | unknown;
@@ -38,7 +38,7 @@ export async function createKindegarten(
         }
         const response: ResponseType = await axios.post(
             `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/admin/kindergartens`,
-            directorData,
+            data,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -47,7 +47,7 @@ export async function createKindegarten(
                 },
             }
         );
-        if (!response.success) {
+        if (!response.data) {
             throw new Error(response.message || "Unknown server error");
         }
         return {

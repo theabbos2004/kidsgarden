@@ -1,6 +1,8 @@
 "use client";
+import { getKindegartens } from "@/actions/kindegartens";
 import { Header } from "@/app/_widgets/Header";
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
+import { DashboardCardType } from "@/lib/types";
 import {
   ArrowDown,
   ArrowUp,
@@ -12,18 +14,20 @@ import {
   User,
   Users,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-export default function dashboard() {
-  const cards = [
+export default function Dashboard() {
+  const [cards, setCards] = useState<DashboardCardType[]>([
     {
+      id: 1,
       title: "Bog‘chalar soni",
-      count: "12",
+      count: "0",
       icon: School,
       status: { increase: true, value: 8.1 },
       color: "green",
     },
     {
+      id: 2,
       title: "O‘quvchilar soni",
       count: "1248",
       icon: User,
@@ -31,6 +35,7 @@ export default function dashboard() {
       color: "blue",
     },
     {
+      id: 3,
       title: "O‘qituvchilar soni",
       count: "64",
       icon: Users,
@@ -38,6 +43,7 @@ export default function dashboard() {
       color: "purple",
     },
     {
+      id: 4,
       title: "Oylik tushum",
       count: "1.144M",
       icon: Banknote,
@@ -45,13 +51,34 @@ export default function dashboard() {
       color: "orange",
     },
     {
+      id: 5,
       title: "Oylik daromatlar",
       count: "1.144M",
       icon: Banknote,
       status: { increase: true, value: 21.8 },
       color: "orange",
     },
-  ];
+  ]);
+  useEffect(() => {
+    const getKindegartensFunc = async () => {
+      const res = await getKindegartens();
+      if (Array.isArray(res.data)) {
+        setCards((prevState) => {
+          return prevState.map((state) => {
+            if (state.id === 1 && Array.isArray(res.data)) {
+              return {
+                ...state,
+                count: res.data.length.toString(),
+              };
+            }
+            return state;
+          });
+        });
+      }
+    };
+    getKindegartensFunc();
+  }, []);
+
   return (
     <div>
       <Header

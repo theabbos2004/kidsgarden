@@ -13,10 +13,12 @@ import { createDirector } from "@/actions/directors";
 import { createKindegarten } from "@/actions/kindegartens";
 import { v4 as uuid } from "uuid";
 
-export function KindegartenHeader({
+export function BranchsHeader({
   Title,
+  parentKindergartenId,
 }: {
   Title: string | React.ReactNode;
+  parentKindergartenId: string;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -57,6 +59,7 @@ export function KindegartenHeader({
           longitude: 0.1,
         },
         directorId,
+        parentKindergartenId,
       };
       const createKindegartenRes = await createKindegarten(kindegartenData);
       if (!createKindegartenRes.success) {
@@ -88,11 +91,11 @@ export function KindegartenHeader({
               <DialogTrigger asChild>
                 <Button variant="green" className="rounded-3xl">
                   <Plus />
-                  <span>Bog‘cha qo‘shish</span>
+                  <span>Filial qo‘shish</span>
                 </Button>
               </DialogTrigger>
               <KindegartenDialog
-                title="Bog‘cha qo‘shish"
+                title="Filial qo‘shish"
                 setOpen={setOpen}
                 onSubmitCallback={onSubmitCallback}
               />

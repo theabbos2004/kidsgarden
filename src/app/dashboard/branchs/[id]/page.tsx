@@ -1,15 +1,16 @@
 "use client";
-import React, { use, useState } from "react";
-import { KindegartenHeader } from "@/app/_widgets/KindegartenHeader";
+import React, { use, useEffect, useState } from "react";
 
 import { Dialog } from "@/components/ui/dialog";
 import { KindegartenDialog } from "@/app/_widgets/KindegartenDialog";
-import { changedKindegartenType } from "@/lib/types";
+import { changedKindegartenType, KindegartenType } from "@/lib/types";
 import z from "zod";
 import { KindegartenFormSchema } from "@/lib/definitions";
 
 import { BreadcrumbKindegarten } from "@/app/_widgets/BreadcrumbKindegarten";
 import { BranchsCard } from "@/app/_widgets/BranchsCard";
+import { BranchsHeader } from "@/app/_widgets/BranchsHeader";
+import { getBranchsOfKindegarten } from "@/actions/branchs";
 export default function Branch({
   params,
 }: {
@@ -19,48 +20,24 @@ export default function Branch({
   const [openSeeDialog, setOpenSeeDialog] = useState<boolean>(false);
   const [changedKindegarten, setChangedKindegarten] =
     useState<changedKindegartenType>({ type: "update", data: {} });
-  const cards = [
-    {
-      id: "1",
-      name: "22-davlaat  bog‘chasi",
-      address: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
-      fullName: "Akbarova Nigora",
-      phoneNumber: "+998 90 123 45 67",
-      date: "03.08.2025",
-    },
-    {
-      id: "2",
-      name: "34-davlaat  bog‘chasi",
-      address: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
-      fullName: "Akbarova Nigora",
-      phoneNumber: "+998 90 123 45 67",
-      date: "03.08.2025",
-    },
-    {
-      id: "3",
-      name: "78-davlaat  bog‘chasi",
-      address: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
-      fullName: "Akbarova Nigora",
-      phoneNumber: "+998 90 123 45 67",
-      date: "03.08.2025",
-    },
-    {
-      id: "4",
-      name: "45-davlaat  bog‘chasi",
-      address: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
-      fullName: "Akbarova Nigora",
-      phoneNumber: "+998 90 123 45 67",
-      date: "03.08.2025",
-    },
-    {
-      id: "5",
-      name: "78-davlaat  bog‘chasi",
-      address: "Toshkent sh., Chilonzor, 19-mavze, 36-uy",
-      fullName: "Akbarova Nigora",
-      phoneNumber: "+998 90 123 45 67",
-      date: "03.08.2025",
-    },
-  ];
+  const [cards, setCards] = useState<KindegartenType[]>([]);
+  useEffect(() => {
+    const getKindegartensFunc = async () => {
+      const res = await getBranchsOfKindegarten({ kindergartenId: id });
+      if (res.success && Array.isArray(res.data)) {
+        const mapped = res.data.map((k) => ({
+          id: k.id,
+          name: k.name,
+          address: `${k.address.region}, ${k.address.city}, ${k.address.street}, ${k.address.house}`,
+          fullName: "Direktor ismi yo‘q",
+          phoneNumber: k.phone,
+          date: new Date().toLocaleDateString("uz-UZ"),
+        }));
+        setCards(mapped);
+      }
+    };
+    getKindegartensFunc();
+  }, [id]);
   async function onSubmitCallback(
     values: z.infer<typeof KindegartenFormSchema>
   ) {
@@ -82,7 +59,7 @@ export default function Branch({
   }
   return (
     <div>
-      <KindegartenHeader
+      <BranchsHeader
         Title={
           <BreadcrumbKindegarten
             routes={[
@@ -91,6 +68,7 @@ export default function Branch({
             ]}
           />
         }
+        parentKindergartenId={id}
       />
       <div className="grid grid-cols-3 px-2 pb-2 gap-5">
         {cards.map((card, cardIndex) => (
