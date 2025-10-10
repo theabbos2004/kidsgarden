@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 export type KindegartenFormType = {
     name?: string;
     phoneNomer?: string;
@@ -52,3 +54,15 @@ export type ResponseType<T = unknown> = {
     success: boolean,
     data?: T | null
 }
+type Status = {
+    increase: boolean;
+    value: number;
+};
+export type DashboardCardType = {
+    id:number,
+    title: string;
+    count: string;
+    icon: LucideIcon;
+    status: Status;
+    color: string;
+};
